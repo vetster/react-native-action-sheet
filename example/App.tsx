@@ -1,10 +1,10 @@
 import {
   ActionSheetProvider,
   connectActionSheet,
-  ActionSheetProps,
-} from '@expo/react-native-action-sheet';
-import { Entypo } from '@expo/vector-icons';
-import * as React from 'react';
+  type ActionSheetProps,
+} from '@vetster/react-native-action-sheet';
+
+import React from 'react';
 import { useState } from 'react';
 import {
   Modal,
@@ -62,7 +62,8 @@ class App extends React.Component<Props, State> {
   async _onShare() {
     try {
       const result = await Share.share({
-        message: 'React Native | A framework for building native apps using React',
+        message:
+          'React Native | A framework for building native apps using React',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -82,35 +83,43 @@ class App extends React.Component<Props, State> {
       <View
         style={{
           alignItems: 'center',
-        }}>
+        }}
+      >
         <View
           style={{
             alignItems: 'center',
             display: Platform.OS === 'ios' ? 'flex' : 'none',
-          }}>
+          }}
+        >
           {this._renderSectionHeader('Use Custom Action Sheet')}
           <Text style={{ marginBottom: 10 }}>
-            On iOS the default action sheet will be the native UI. However, you can optionally
-            enable the custom JS action sheet by setting the useCustomActionSheet prop on the
-            provider.
+            On iOS the default action sheet will be the native UI. However, you
+            can optionally enable the custom JS action sheet by setting the
+            useCustomActionSheet prop on the provider.
           </Text>
-          <Entypo.Button
-            backgroundColor={this.props.useCustomActionSheet ? '#3e3e3e' : 'white'}
-            name={this.props.useCustomActionSheet ? 'check' : 'circle'}
-            color={this.props.useCustomActionSheet ? '#fff' : '#3e3e3e'}
+          <TouchableOpacity
             style={{
+              backgroundColor: this.props.useCustomActionSheet
+                ? '#3e3e3e'
+                : 'white',
               borderColor: '#3e3e3e',
               borderWidth: 2,
             }}
-            onPress={() => this.props.setUseCustomActionSheet(!this.props.useCustomActionSheet)}>
+            onPress={() =>
+              this.props.setUseCustomActionSheet(
+                !this.props.useCustomActionSheet
+              )
+            }
+          >
             <Text
               style={{
                 fontSize: 15,
                 color: this.props.useCustomActionSheet ? '#fff' : '#3e3e3e',
-              }}>
+              }}
+            >
               Use Custom Action Sheet
             </Text>
-          </Entypo.Button>
+          </TouchableOpacity>
         </View>
         {this._renderSectionHeader('Universal Options')}
         <ShowActionSheetButton
@@ -234,17 +243,20 @@ class App extends React.Component<Props, State> {
   render() {
     return (
       <SafeAreaView style={styles.flex}>
-        <ScrollView style={styles.flex} contentContainerStyle={styles.contentContainer}>
+        <ScrollView
+          style={styles.flex}
+          contentContainerStyle={styles.contentContainer}
+        >
           <Text style={styles.headerText}>
             {
-              'Hello!\n\nThis is a simple example app to demonstrate @expo/react-native-action-sheet.'
+              'Hello!\n\nThis is a simple example app to demonstrate @vetster/react-native-action-sheet.'
             }
           </Text>
           {this._renderButtons()}
           {this._renderSelectionText()}
           <Text style={styles.notes}>
-            Note: Icons and custom text styles are only available on Android. Separators can only be
-            toggled on Android; they always show on iOS.
+            Note: Icons and custom text styles are only available on Android.
+            Separators can only be toggled on Android; they always show on iOS.
           </Text>
         </ScrollView>
       </SafeAreaView>

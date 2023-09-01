@@ -1,7 +1,14 @@
-import { ActionSheetOptions } from '@expo/react-native-action-sheet';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
-import * as React from 'react';
-import { Text, View, TextStyle, ViewStyle, findNodeHandle } from 'react-native';
+import type { ActionSheetOptions } from '@vetster/react-native-action-sheet';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
+import Entypo from 'react-native-vector-icons/dist/Entypo';
+import React from 'react';
+import {
+  Text,
+  View,
+  type TextStyle,
+  type ViewStyle,
+  findNodeHandle,
+} from 'react-native';
 
 const icon = (name: React.ComponentProps<typeof MaterialIcons>['name']) => (
   <MaterialIcons key={name} name={name} size={24} />
@@ -101,7 +108,9 @@ export default class ShowActionSheetButton extends React.PureComponent<Props> {
       {
         options,
         cancelButtonIndex,
-        cancelButtonTintColor: withCancelButtonTintColor ? '#D93F0B' : undefined,
+        cancelButtonTintColor: withCancelButtonTintColor
+          ? '#D93F0B'
+          : undefined,
         destructiveButtonIndex,
         disabledButtonIndices,
         title,
@@ -137,17 +146,20 @@ export default class ShowActionSheetButton extends React.PureComponent<Props> {
       <View
         style={{
           margin: 6,
-        }}>
+        }}
+      >
         <Entypo.Button
           name="code"
           backgroundColor="#3e3e3e"
           onPress={this._showActionSheet}
-          ref={this._anchorRef}>
+          ref={this._anchorRef}
+        >
           <Text
             style={{
               fontSize: 15,
               color: '#fff',
-            }}>
+            }}
+          >
             {title}
           </Text>
         </Entypo.Button>

@@ -4,14 +4,13 @@ import {
   BackHandler,
   Easing,
   Modal,
-  Platform,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
-  ViewProps,
+  type ViewProps,
 } from 'react-native';
 
-import { ActionSheetOptions } from '../types';
+import type { ActionSheetOptions } from '../types';
 import ActionGroup from './ActionGroup';
 
 interface State {
@@ -50,31 +49,14 @@ export default class CustomActionSheet extends React.Component<Props, State> {
 
   _deferAfterAnimation?: () => void = undefined;
 
-  componentDidMount() {
-    if (Platform.OS === 'web') {
-      document.addEventListener('keydown', this._handleWebKeyDown);
-    }
-  }
-
-  componentWillUnmount() {
-    if (Platform.OS === 'web') {
-      document.removeEventListener('keydown', this._handleWebKeyDown);
-    }
-  }
-
-  _handleWebKeyDown = (event: KeyboardEvent): void => {
-    if (event.key === ESCAPE_KEY && this.state.isVisible) {
-      event.preventDefault();
-      this._selectCancelButton();
-    }
-  };
-
   _setActionSheetHeight = ({ nativeEvent }: any) =>
     (this._actionSheetHeight = nativeEvent.layout.height);
 
   render() {
     const { isVisible, overlayOpacity, options } = this.state;
-    const useModal = options ? options.autoFocus || options.useModal === true : false;
+    const useModal = options
+      ? options.autoFocus || options.useModal === true
+      : false;
     const overlay = isVisible ? (
       <Animated.View
         style={[
@@ -90,13 +72,17 @@ export default class CustomActionSheet extends React.Component<Props, State> {
     const appContent = (
       <View
         style={styles.flexContainer}
-        importantForAccessibility={isVisible ? 'no-hide-descendants' : 'auto'}>
+        importantForAccessibility={isVisible ? 'no-hide-descendants' : 'auto'}
+      >
         {React.Children.only(this.props.children)}
       </View>
     );
 
     return (
-      <View pointerEvents={this.props.pointerEvents} style={styles.flexContainer}>
+      <View
+        pointerEvents={this.props.pointerEvents}
+        style={styles.flexContainer}
+      >
         {appContent}
         {isVisible && !useModal && (
           <>
@@ -105,7 +91,11 @@ export default class CustomActionSheet extends React.Component<Props, State> {
           </>
         )}
         {isVisible && useModal && (
-          <Modal animationType="none" transparent onRequestClose={this._selectCancelButton}>
+          <Modal
+            animationType="none"
+            transparent
+            onRequestClose={this._selectCancelButton}
+          >
             {overlay}
             {this._renderSheet()}
           </Modal>
@@ -142,7 +132,10 @@ export default class CustomActionSheet extends React.Component<Props, State> {
       cancelButtonTintColor,
     } = options;
     return (
-      <TouchableWithoutFeedback importantForAccessibility="yes" onPress={this._selectCancelButton}>
+      <TouchableWithoutFeedback
+        importantForAccessibility="yes"
+        onPress={this._selectCancelButton}
+      >
         <Animated.View
           needsOffscreenAlphaCompositing={isAnimating}
           style={[
@@ -158,7 +151,8 @@ export default class CustomActionSheet extends React.Component<Props, State> {
                 },
               ],
             },
-          ]}>
+          ]}
+        >
           <View style={styles.sheet} onLayout={this._setActionSheetHeight}>
             <ActionGroup
               options={optionsArray}
@@ -189,12 +183,19 @@ export default class CustomActionSheet extends React.Component<Props, State> {
     );
   }
 
-  showActionSheetWithOptions = (options: ActionSheetOptions, onSelect: (i: number) => void) => {
+  showActionSheetWithOptions = (
+    options: ActionSheetOptions,
+    onSelect: (i: number) => void
+  ) => {
     const { isVisible, overlayOpacity, sheetOpacity } = this.state;
     const { useNativeDriver = true } = this.props;
 
     if (isVisible) {
-      this._deferAfterAnimation = this.showActionSheetWithOptions.bind(this, options, onSelect);
+      this._deferAfterAnimation = this.showActionSheetWithOptions.bind(
+        this,
+        options,
+        onSelect
+      );
       return;
     }
 
@@ -228,7 +229,7 @@ export default class CustomActionSheet extends React.Component<Props, State> {
       }
     });
     // @ts-ignore: Argument of type '"actionSheetHardwareBackPress"' is not assignable to parameter of type '"hardwareBackPress"'
-    BackHandler.addEventListener('actionSheetHardwareBackPress', this._selectCancelButton);
+    BackHandler.addEventListener('hardwareBackPress', this._selectCancelButton);
   };
 
   _selectCancelButton = () => {
@@ -270,7 +271,10 @@ export default class CustomActionSheet extends React.Component<Props, State> {
     }
 
     // @ts-ignore: Argument of type '"actionSheetHardwareBackPress"' is not assignable to parameter of type '"hardwareBackPress"'
-    BackHandler.removeEventListener('actionSheetHardwareBackPress', this._selectCancelButton);
+    BackHandler.removeEventListener(
+      'hardwareBackPress',
+      this._selectCancelButton
+    );
     this.setState({
       isAnimating: true,
     });

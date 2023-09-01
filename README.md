@@ -1,27 +1,27 @@
-# @expo/react-native-action-sheet
+# @vetster/react-native-action-sheet
 
-[![npm](https://img.shields.io/npm/v/@expo/react-native-action-sheet.svg?style=flat-square)](https://www.npmjs.com/package/@expo/react-native-action-sheet)
+[![npm](https://img.shields.io/npm/v/@vetster/react-native-action-sheet.svg?style=flat-square)](https://www.npmjs.com/package/@vetster/react-native-action-sheet)
 [![License: MIT](https://img.shields.io/github/license/nd-02110114/goofi-mobile.svg)](https://opensource.org/licenses/MIT)
 [![Discord](https://img.shields.io/badge/discord-expo-green?style=flat-square&logo=discord)](https://discord.gg/4gtbPAdpaE)
 
 React Native Action Sheet is a cross-platform React Native component that uses the native UIActionSheet on iOS and a pure JS implementation on Android.
 
-| iOS                                                                                                                        | Android                                                                                                                        | Web                                                                                                                        |
-| -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| <img  src="https://raw.githubusercontent.com/expo/react-native-action-sheet/master/gif/ios.gif" width="200" height="400"/> | <img  src="https://raw.githubusercontent.com/expo/react-native-action-sheet/master/gif/android.gif" width="200" height="400"/> | <img  src="https://raw.githubusercontent.com/expo/react-native-action-sheet/master/gif/web.gif" width="400" height="400"/> |
+| iOS                                                                                                                           | Android                                                                                                                           |
+| ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| <img  src="https://raw.githubusercontent.com/vetster/react-native-action-sheet/master/gif/ios.gif" width="200" height="400"/> | <img  src="https://raw.githubusercontent.com/vetster/react-native-action-sheet/master/gif/android.gif" width="200" height="400"/> |
 
-## [Check out the example snack here!](https://snack.expo.dev/@expo-action-sheet/example)
+<!-- ## [Check out the example snack here!](https://snack.expo.dev/@expo-action-sheet/example) -->
 
 ## Installation
 
-```
-npm install @expo/react-native-action-sheet
+```zsh
+npm install @vetster/react-native-action-sheet
 ```
 
 or
 
-```
-yarn add @expo/react-native-action-sheet
+```zsh
+yarn add @vetster/react-native-action-sheet
 ```
 
 ## A basic ActionSheet Setup
@@ -31,7 +31,7 @@ yarn add @expo/react-native-action-sheet
 ReactNativeActionSheet uses React context to allow your components to invoke the menu. This means your app needs to be wrapped with the `ActionSheetProvider` component first.
 
 ```jsx
-import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import { ActionSheetProvider } from '@vetster/react-native-action-sheet';
 
 export default function AppContainer() {
   return (
@@ -42,11 +42,11 @@ export default function AppContainer() {
 }
 ```
 
-### 2. Call the `showActionSheetWithOptions` method with a hook or a higher order component.
+### 2. Call the `showActionSheetWithOptions` method with a hook or a higher order component
 
 ```tsx
 // Using the provided hook
-import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useActionSheet } from '@vetster/react-native-action-sheet';
 
 export default Menu() {
   const { showActionSheetWithOptions } = useActionSheet();
@@ -85,7 +85,7 @@ Alternatively, any component can use the higher order component to access the co
 
 ```tsx
 // Using a Higher Order Component to wrap your component
-import { connectActionSheet } from '@expo/react-native-action-sheet';
+import { connectActionSheet } from '@vetster/react-native-action-sheet';
 
 function Menu({ showActionSheetWithOptions }) {
   /* ... */
@@ -99,8 +99,6 @@ export default connectActionSheet(Menu);
 ## Options
 
 The goal of this library is to mimic the native iOS and Android ActionSheets as closely as possible.
-
-This library can also be used in the browser with Expo for web.
 
 ### Universal Props
 
@@ -122,7 +120,7 @@ This library can also be used in the browser with Expo for web.
 | `anchor`             | number | iPad only option that allows for docking the action sheet to a node. See [ShowActionSheetButton.tsx](/example/ShowActionSheetButton.tsx) for an example on how to implement this. |
 | `userInterfaceStyle` | string | The interface style used for the action sheet, can be set to `light` or `dark`, otherwise the default system style will be used.                                                  |
 
-### Custom Action Sheet Only (Android/Web) Props
+### Custom Action Sheet Only (Android) Props
 
 The below props allow modification of the Android ActionSheet. They have no effect on the look on iOS as the native iOS Action Sheet does not have options for modifying these options.
 
@@ -146,7 +144,7 @@ The following props can be set directly on the `ActionSheetProvider`
 
 | Name                   | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `useCustomActionSheet` | boolean | iOS only prop that uses the custom pure JS action sheet (Android/Web version) instead of the native ActionSheetIOS component. Defaults to `false`.                                                                                                                                                                                                                                                                                                                 |
+| `useCustomActionSheet` | boolean | iOS only prop that uses the custom pure JS action sheet (Android version) instead of the native ActionSheetIOS component. Defaults to `false`.                                                                                                                                                                                                                                                                                                                     |
 | `useNativeDriver`      | boolean | Windows only option that provides the option to disable the [native animation](https://reactnative.dev/docs/animated#using-the-native-driver) driver for React Native Windows projects targeting _Windows 10 Version-1809 ; Build-10.0.17763.0_ and earlier. `useNativeDriver` is [supported in Version-1903 and later](https://microsoft.github.io/react-native-windows/docs/win10-compat) so if your project is targeting that, you don't need to set this prop. |
 
 ```jsx
@@ -170,13 +168,13 @@ function onButtonPress(selectedIndex: number) {
 }
 ```
 
-## Try it out
+<!-- ## Try it out
 
-Try it in Expo Snack: https://snack.expo.dev/@expo-action-sheet/example.
+Try it in Expo Snack: https://snack.expo.dev/@expo-action-sheet/example. -->
 
 ## Example
 
-See the [example app](https://github.com/expo/react-native-action-sheet/tree/master/example).
+See the [example app](https://github.com/vetster/react-native-action-sheet/tree/master/example).
 
 ### Usage
 
@@ -187,9 +185,6 @@ $ yarn
 // build simulator
 $ yarn ios
 $ yarn android
-
-// web
-$ yarn web
 ```
 
 ## Development
@@ -197,9 +192,9 @@ $ yarn web
 ### Setup
 
 ```
-$ git clone git@github.com:expo/react-native-action-sheet.git
-$ cd react-native-action-sheet
-$ yarn
+git clone git@github.com:vetster/react-native-action-sheet.git
+cd react-native-action-sheet
+yarn
 ```
 
 ### Build
@@ -207,7 +202,7 @@ $ yarn
 We use [bob](https://github.com/react-native-community/bob).
 
 ```
-$ yarn build
+yarn build
 ```
 
 ### Lint & Format

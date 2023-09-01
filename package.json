@@ -1,13 +1,20 @@
 {
-  "name": "@expo/react-native-action-sheet",
+  "name": "@vetster/react-native-action-sheet",
   "version": "4.0.1",
   "description": "A cross-platform ActionSheet for React Native",
-  "react-native": "lib/module/index.js",
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
+  "react-native": "src/index",
+  "source": "src/index",
   "files": [
-    "lib"
+    "src",
+    "lib",
+    "ios",
+    "*.podspec",
+    "!lib/typescript/example",
+    "!ios/build",
+    "!**/.*"
   ],
   "scripts": {
     "prepare": "bob build",
@@ -15,63 +22,130 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint . --fix",
     "lint-check": "eslint",
-    "semantic-release": "semantic-release"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/expo/react-native-action-sheet.git"
+    "semantic-release": "semantic-release",
+    "typecheck": "tsc",
+    "release": "release-it",
+    "example": "yarn --cwd example",
+    "build:ios": "cd example/ios && xcodebuild -workspace ReactNativeActionSheetExample.xcworkspace -scheme ReactNativeActionSheetExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
+    "bootstrap": "yarn example && yarn install && yarn example pods",
+    "clean": "del-cli example/ios/build"
   },
   "keywords": [
-    "expo",
     "react-native",
-    "action-sheet"
+    "ios",
+    "react-native"
   ],
-  "author": "Jesse Ruder <jesse@sixfivezero.net>",
+  "repository": "https://github.com/vetster/react-native-action-sheet",
+  "author": "Vetster Engineering <engineering@vetster.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/expo/react-native-action-sheet/issues"
+    "url": "https://github.com/vetster/react-native-action-sheet/issues"
   },
-  "homepage": "https://github.com/expo/react-native-action-sheet",
+  "homepage": "https://github.com/vetster/react-native-action-sheet#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@types/hoist-non-react-statics": "^3.3.1",
+    "hoist-non-react-statics": "^3.3.0"
+  },
   "devDependencies": {
-    "@react-native-community/bob": "^0.6.1",
-    "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/git": "^9.0.0",
-    "@types/react": "^16.8.23",
-    "@types/react-native": "^0.57.65",
-    "eslint": "^7.32.0",
-    "eslint-config-universe": "^8.0.0",
-    "husky": "^3.0.0",
-    "lint-staged": "^9.2.0",
-    "prettier": "^2.3.2",
-    "react": "^16.8.6",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
-    "typescript": "^3.5.3"
+    "@commitlint/config-conventional": "^17.0.2",
+    "@react-native-community/eslint-config": "^3.0.2",
+    "@release-it/conventional-changelog": "^5.0.0",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "0.70.0",
+    "commitlint": "^17.0.2",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^28.1.1",
+    "pod-install": "^0.1.0",
+    "prettier": "^2.0.5",
+    "react": "18.2.0",
+    "react-native": "0.72.4",
+    "react-native-builder-bob": "^0.21.3",
+    "release-it": "^15.0.0",
+    "turbo": "^1.10.7",
+    "typescript": "^5.0.2"
+  },
+  "resolutions": {
+    "@types/react": "17.0.21"
   },
   "peerDependencies": {
-    "react": ">=16.3.0"
+    "react": "*",
+    "react-native": "*"
   },
-  "@react-native-community/bob": {
+  "engines": {
+    "node": ">= 16.0.0"
+  },
+  "packageManager": "^yarn@1.22.15",
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@react-native-community",
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "quoteProps": "consistent",
+          "singleQuote": true,
+          "tabWidth": 2,
+          "trailingComma": "es5",
+          "useTabs": false
+        }
+      ],
+      "@typescript-eslint/no-unused-vars": "warn"
+    }
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ],
+  "prettier": {
+    "quoteProps": "consistent",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false
+  },
+  "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
     "targets": [
       "commonjs",
       "module",
-      "typescript"
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "yarn lint",
-      "git add"
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
-  },
-  "dependencies": {
-    "@types/hoist-non-react-statics": "^3.3.1",
-    "hoist-non-react-statics": "^3.3.0"
   }
 }

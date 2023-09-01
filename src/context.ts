@@ -1,9 +1,12 @@
 import * as React from 'react';
 
-import { ActionSheetOptions, ActionSheetProps } from './types';
+import type { ActionSheetOptions, ActionSheetProps } from './types';
 
 const context = React.createContext<ActionSheetProps>({
-  showActionSheetWithOptions: (options: ActionSheetOptions, callback: (i: number) => void) => {},
+  showActionSheetWithOptions: (
+    options: ActionSheetOptions,
+    callback: (i: number) => void
+  ) => {},
 });
 
 export function useActionSheet() {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextStyle, ViewStyle } from 'react-native';
+import type { TextStyle, ViewStyle } from 'react-native';
 
 export interface ActionSheetProps {
   showActionSheetWithOptions: (
@@ -29,7 +29,7 @@ export interface ActionSheetIOSOptions {
   disabledButtonIndices?: number[];
 }
 
-// for Android or Web
+// for Android
 export interface ActionSheetOptions extends ActionSheetIOSOptions {
   icons?: React.ReactNode[];
   tintIcons?: boolean;

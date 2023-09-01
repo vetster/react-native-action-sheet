@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-// NativeActionSheet will always be custom when on Android/web
+// NativeActionSheet will always be custom when on Android
 import NativeActionSheet from './ActionSheet';
 import CustomActionSheet from './ActionSheet/CustomActionSheet';
 import { Provider } from './context';
-import { ActionSheetOptions, ActionSheetProviderRef } from './types';
+import type { ActionSheetOptions, ActionSheetProviderRef } from './types';
 
 interface Props {
   children: React.ReactNode;
@@ -12,43 +12,51 @@ interface Props {
   useCustomActionSheet?: boolean;
 }
 
-export default React.forwardRef<ActionSheetProviderRef, Props>(function ActionSheetProvider(
-  { children, useNativeDriver, useCustomActionSheet = false },
-  ref
-) {
-  const actionSheetRef = React.useRef<NativeActionSheet>(null);
+export default React.forwardRef<ActionSheetProviderRef, Props>(
+  function ActionSheetProvider(
+    { children, useNativeDriver, useCustomActionSheet = false },
+    ref
+  ) {
+    const actionSheetRef = React.useRef<NativeActionSheet>(null);
 
-  const context = React.useMemo(
-    () => ({
-      showActionSheetWithOptions: (options: ActionSheetOptions, callback: (i: number) => void) => {
-        if (actionSheetRef.current) {
-          actionSheetRef.current.showActionSheetWithOptions(options, callback);
-        }
-      },
-    }),
-    [actionSheetRef]
-  );
+    const context = React.useMemo(
+      () => ({
+        showActionSheetWithOptions: (
+          options: ActionSheetOptions,
+          callback: (i: number) => void
+        ) => {
+          if (actionSheetRef.current) {
+            actionSheetRef.current.showActionSheetWithOptions(
+              options,
+              callback
+            );
+          }
+        },
+      }),
+      [actionSheetRef]
+    );
 
-  React.useImperativeHandle(
-    ref,
-    () => ({
-      // backwards compatible with 13.x before context was being passed right on the ref
-      getContext: () => context,
-      showActionSheetWithOptions: context.showActionSheetWithOptions,
-    }),
-    [context]
-  );
+    React.useImperativeHandle(
+      ref,
+      () => ({
+        // backwards compatible with 13.x before context was being passed right on the ref
+        getContext: () => context,
+        showActionSheetWithOptions: context.showActionSheetWithOptions,
+      }),
+      [context]
+    );
 
-  const ActionSheet = React.useMemo(
-    () => (useCustomActionSheet ? CustomActionSheet : NativeActionSheet),
-    [useCustomActionSheet]
-  );
+    const ActionSheet = React.useMemo(
+      () => (useCustomActionSheet ? CustomActionSheet : NativeActionSheet),
+      [useCustomActionSheet]
+    );
 
-  return (
-    <Provider value={context}>
-      <ActionSheet ref={actionSheetRef} useNativeDriver={useNativeDriver}>
-        {React.Children.only(children)}
-      </ActionSheet>
-    </Provider>
-  );
-});
+    return (
+      <Provider value={context}>
+        <ActionSheet ref={actionSheetRef} useNativeDriver={useNativeDriver}>
+          {React.Children.only(children)}
+        </ActionSheet>
+      </Provider>
+    );
+  }
+);

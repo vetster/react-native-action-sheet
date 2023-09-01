@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ActionSheetIOS, View, ViewProps } from 'react-native';
+import { ActionSheetIOS, View, type ViewProps } from 'react-native';
 
-import { ActionSheetIOSOptions } from '../types';
+import type { ActionSheetIOSOptions } from '../types';
 
 interface Props {
   readonly children: React.ReactNode;
@@ -19,8 +19,11 @@ export default class ActionSheet extends React.Component<Props> {
     );
   }
 
-  showActionSheetWithOptions(dataOptions: ActionSheetIOSOptions, onSelect: onSelect) {
-    // ...dataOptions include other keys which use in android and web, thats why `Android-Only options` Crash on IOS
+  showActionSheetWithOptions(
+    dataOptions: ActionSheetIOSOptions,
+    onSelect: onSelect
+  ) {
+    // ...dataOptions include other keys which use in android, thats why `Android-Only options` Crash on IOS
     const {
       cancelButtonIndex,
       destructiveButtonIndex,

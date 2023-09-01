@@ -1,14 +1,28 @@
 {
-  "include": ["src"],
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "strict": true,
-    "moduleResolution": "node",
-    "lib": ["dom", "es2015", "es2016", "esnext"],
-    "jsx": "react-native",
+    "baseUrl": "./",
+    "paths": {
+      "@vetster/react-native-action-sheet": ["./src/index"]
+    },
+    "outDir": "lib/",
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "esModuleInterop": true,
-    "skipLibCheck": true
-  },
-  "exclude": ["node_modules"]
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "lib": ["esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
+    "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "target": "esnext",
+    "verbatimModuleSyntax": true,
+    "typeRoots": ["node_modules/@types/"]
+  }
 }

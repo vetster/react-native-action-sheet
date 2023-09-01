@@ -9,9 +9,10 @@ import {
   Text,
   UIManager,
   View,
+  type ColorValue,
 } from 'react-native';
 
-import { ActionSheetOptions } from '../types';
+import type { ActionSheetOptions } from '../types';
 import TouchableNativeFeedbackSafe from './TouchableNativeFeedbackSafe';
 
 type Props = ActionSheetOptions & {
@@ -47,7 +48,10 @@ const focusViewOnRender = (ref: React.Component | null) => {
   }
 };
 
-const isIndexDestructive = (index: number, destructiveIndex?: number | number[]) => {
+const isIndexDestructive = (
+  index: number,
+  destructiveIndex?: number | number[]
+) => {
   if (Array.isArray(destructiveIndex)) {
     return destructiveIndex.includes(index);
   }
@@ -55,7 +59,10 @@ const isIndexDestructive = (index: number, destructiveIndex?: number | number[])
   return index === destructiveIndex;
 };
 
-const isIndexDisabled = (index: number, disabledButtonIndices: number[] = []) => {
+const isIndexDisabled = (
+  index: number,
+  disabledButtonIndices: number[] = []
+) => {
   return disabledButtonIndices.includes(index);
 };
 
@@ -79,12 +86,16 @@ export default class ActionGroup extends React.Component<Props> {
 
   _renderRowSeparator = (key: string | number) => {
     return (
-      <View key={`separator-${key}`} style={[styles.rowSeparator, this.props.separatorStyle]} />
+      <View
+        key={`separator-${key}`}
+        style={[styles.rowSeparator, this.props.separatorStyle]}
+      />
     );
   };
 
   _renderTitleContent = () => {
-    const { title, titleTextStyle, message, messageTextStyle, showSeparators } = this.props;
+    const { title, titleTextStyle, message, messageTextStyle, showSeparators } =
+      this.props;
 
     if (!title && !message) {
       return null;
@@ -92,24 +103,46 @@ export default class ActionGroup extends React.Component<Props> {
 
     return (
       <View>
-        <View style={[styles.titleContainer, { paddingBottom: showSeparators ? 24 : 16 }]}>
-          {!!title && <Text style={[styles.title, titleTextStyle]}>{title}</Text>}
-          {!!message && <Text style={[styles.message, messageTextStyle]}>{message}</Text>}
+        <View
+          style={[
+            styles.titleContainer,
+            { paddingBottom: showSeparators ? 24 : 16 },
+          ]}
+        >
+          {!!title && (
+            <Text style={[styles.title, titleTextStyle]}>{title}</Text>
+          )}
+          {!!message && (
+            <Text style={[styles.message, messageTextStyle]}>{message}</Text>
+          )}
         </View>
         {!!showSeparators && this._renderRowSeparator('title')}
       </View>
     );
   };
 
-  _renderIconElement = (iconSource: React.ReactNode | null, color: string) => {
+  _renderIconElement = (
+    iconSource: React.ReactNode | null,
+    color: string | ColorValue
+  ) => {
     const { tintIcons } = this.props;
     if (!iconSource) {
       return null;
     }
 
     if (typeof iconSource === 'number') {
-      const iconStyle = [styles.icon, { tintColor: tintIcons ? color : undefined }];
-      return <Image fadeDuration={0} source={iconSource} resizeMode="contain" style={iconStyle} />;
+      const iconStyle = [
+        styles.icon,
+        { tintColor: tintIcons ? color : undefined },
+      ];
+      return (
+        <Image
+          fadeDuration={0}
+          source={iconSource}
+          resizeMode="contain"
+          style={iconStyle}
+        />
+      );
     } else {
       return <View style={styles.icon}>{iconSource}</View>;
     }
@@ -161,7 +194,8 @@ export default class ActionGroup extends React.Component<Props> {
           onPress={() => onSelect(i)}
           style={[styles.button, disabled && styles.disabledButton]}
           accessibilityRole="button"
-          accessibilityLabel={options[i]}>
+          accessibilityLabel={options[i]}
+        >
           {this._renderIconElement(iconSource, color)}
           <Text style={[styles.text, textStyle, { color }]}>{options[i]}</Text>
         </TouchableNativeFeedbackSafe>
