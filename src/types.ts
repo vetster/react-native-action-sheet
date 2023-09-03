@@ -17,7 +17,7 @@ export interface ActionSheetProviderRef extends ActionSheetProps {
 
 // for iOS
 export interface ActionSheetIOSOptions {
-  options: string[];
+  options: Array<{ title: string; iconName?: string }>;
   title?: string;
   message?: string;
   tintColor?: string;

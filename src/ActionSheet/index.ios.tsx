@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { ActionSheetIOS, View, type ViewProps } from 'react-native';
+import { View, type ViewProps, NativeModules } from 'react-native';
 
 import type { ActionSheetIOSOptions } from '../types';
+
+const ActionSheetIOS = NativeModules.ReactNativeActionSheet;
 
 interface Props {
   readonly children: React.ReactNode;

@@ -194,10 +194,12 @@ export default class ActionGroup extends React.Component<Props> {
           onPress={() => onSelect(i)}
           style={[styles.button, disabled && styles.disabledButton]}
           accessibilityRole="button"
-          accessibilityLabel={options[i]}
+          accessibilityLabel={options[i].title}
         >
           {this._renderIconElement(iconSource, color)}
-          <Text style={[styles.text, textStyle, { color }]}>{options[i]}</Text>
+          <Text style={[styles.text, textStyle, { color }]}>
+            {options[i].title}
+          </Text>
         </TouchableNativeFeedbackSafe>
       );
 

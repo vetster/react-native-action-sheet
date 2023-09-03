@@ -160,7 +160,12 @@ class App extends React.Component<Props, State> {
               showActionSheetWithOptions(
                 {
                   title: 'Sub Action Sheet',
-                  options: ['One', 'Two', 'Three', 'Done'],
+                  options: [
+                    { title: 'One' },
+                    { title: 'Two' },
+                    { title: 'Three' },
+                    { title: 'Done' },
+                  ],
                   cancelButtonIndex: 3,
                 },
                 this._updateSelectionText
@@ -175,7 +180,7 @@ class App extends React.Component<Props, State> {
             showActionSheetWithOptions(
               {
                 title: 'Share Menu',
-                options: ['Share', 'Cancel'],
+                options: [{ title: 'Share' }, { title: 'Cancel' }],
                 cancelButtonIndex: 1,
               },
               (i) => {
