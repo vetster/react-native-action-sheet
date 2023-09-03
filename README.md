@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/github/license/nd-02110114/goofi-mobile.svg)](https://opensource.org/licenses/MIT)
 [![Discord](https://img.shields.io/badge/discord-expo-green?style=flat-square&logo=discord)](https://discord.gg/4gtbPAdpaE)
 
+> :warning: This is a fork from [@expo/react-native-action-sheet](https://github.com/expo/react-native-action-sheet) ported to `react-native` to support system icons on `iOS`
+
 React Native Action Sheet is a cross-platform React Native component that uses the native UIActionSheet on iOS and a pure JS implementation on Android.
 
 | iOS                                                                                                                           | Android                                                                                                                           |
