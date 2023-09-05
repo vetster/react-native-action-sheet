@@ -30,12 +30,9 @@ class ActionSheetTableViewCell: UITableViewCell {
 
     let title: UILabel = {
         let title = UILabel()
-        title.font = .systemFont(ofSize: 18)
+        title.font = .systemFont(ofSize: 19)
         title.lineBreakMode = .byTruncatingMiddle
-        title.adjustsFontSizeToFitWidth = true
         title.baselineAdjustment = .alignCenters
-        
-        title.translatesAutoresizingMaskIntoConstraints = false
         
         title.backgroundColor = .clear
         
@@ -48,7 +45,8 @@ class ActionSheetTableViewCell: UITableViewCell {
         image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
         
-        image.widthAnchor.constraint(equalToConstant: 28).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         return image
     }()
@@ -59,12 +57,13 @@ class ActionSheetTableViewCell: UITableViewCell {
         image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
         
-        image.widthAnchor.constraint(equalToConstant: 28).isActive = true
-
+        image.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        
         return image
     }()
     
-    let seperator: UIView = {
+    let separator: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -74,12 +73,12 @@ class ActionSheetTableViewCell: UITableViewCell {
             view.backgroundColor = .gray
         }
         
-        view.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 0.7).isActive = true
         
         return view
     }()
     
-    var bottomSeperator: UIView = {
+    var bottomSeparator: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -89,7 +88,7 @@ class ActionSheetTableViewCell: UITableViewCell {
             view.backgroundColor = .gray
         }
         
-        view.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 0.7).isActive = true
         
         return view
     }()
@@ -104,19 +103,19 @@ class ActionSheetTableViewCell: UITableViewCell {
         
         setupView()
         
-        contentView.addSubview(seperator)
+        contentView.addSubview(separator)
         
-        seperator.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 1).isActive = true
-        seperator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 1).isActive = true
-        seperator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 1).isActive = true
+        separator.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        separator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
+        separator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0).isActive = true
      
-        contentView.addSubview(bottomSeperator)
+        contentView.addSubview(bottomSeparator)
         
-        bottomSeperator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1).isActive = true
-        bottomSeperator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 1).isActive = true
-        bottomSeperator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 1).isActive = true
+        bottomSeparator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
+        bottomSeparator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
+        bottomSeparator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0).isActive = true
         
-        bottomSeperator.isHidden = true
+        bottomSeparator.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -133,8 +132,8 @@ class ActionSheetTableViewCell: UITableViewCell {
         
         stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
         stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0).isActive = true
-        stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
-        stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
+        stack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0).isActive = true
+        stack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0).isActive = true
         
         stack.addArrangedSubview(leftImage)
         stack.addArrangedSubview(title)

@@ -139,11 +139,11 @@ class ActionSheetController: UIAlertController, UITableViewDelegate, UITableView
         }
         
         if index == 0 {
-            cell.seperator.isHidden = configuration.hideExtraSeparator
+            cell.separator.isHidden = configuration.hideExtraSeparator
         }
         
         if index >= configuration.buttons.endIndex - 1 {
-            cell.bottomSeperator.isHidden = configuration.hideExtraSeparator
+            cell.bottomSeparator.isHidden = configuration.hideExtraSeparator
         }
         
         return cell
