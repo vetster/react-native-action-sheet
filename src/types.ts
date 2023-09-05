@@ -15,9 +15,14 @@ export interface ActionSheetProviderRef extends ActionSheetProps {
   getContext: () => ActionSheetProps;
 }
 
+export type IconResource = {
+  title: string;
+  leftIcon?: string;
+  rightIcon?: string;
+};
 // for iOS
 export interface ActionSheetIOSOptions {
-  options: Array<{ title: string; leftIcon?: string; rightIcon?: string }>;
+  options: IconResource[] | string[];
   title?: string;
   message?: string;
   tintColor?: string;
@@ -50,3 +55,14 @@ export interface ActionSheetOptions extends ActionSheetIOSOptions {
   useModal?: boolean;
   destructiveColor?: string;
 }
+
+export type ActionSheetOptionsInternal = Omit<ActionSheetOptions, 'options'> & {
+  options: IconResource[];
+};
+
+export type ActionSheetIOSOptionsInternal = Omit<
+  ActionSheetIOSOptions,
+  'options'
+> & {
+  options: IconResource[];
+};

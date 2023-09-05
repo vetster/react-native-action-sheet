@@ -12,14 +12,18 @@ import {
   type ColorValue,
 } from 'react-native';
 
-import type { ActionSheetOptions, IconDetails } from '../types';
+import type {
+  ActionSheetOptionsInternal,
+  IconDetails,
+  IconResource,
+} from '../types';
 import TouchableNativeFeedbackSafe from './TouchableNativeFeedbackSafe';
 import {
   withSafeAreaInsets,
   type WithSafeAreaInsetsProps,
 } from 'react-native-safe-area-context';
 
-type Props = ActionSheetOptions &
+type Props = ActionSheetOptionsInternal &
   WithSafeAreaInsetsProps & {
     tintIcons: boolean | null;
     onSelect: (i: number) => boolean;
@@ -239,7 +243,7 @@ class ActionGroup extends React.Component<Props> {
               index: i,
             })}
           <Text style={[styles.text, textStyle, { color }]}>
-            {options[i].title}
+            {option.title}
           </Text>
           {option.rightIcon &&
             this.renderIcon({

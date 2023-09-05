@@ -10,13 +10,13 @@ import {
   type ViewProps,
 } from 'react-native';
 
-import type { ActionSheetOptions } from '../types';
+import type { ActionSheetOptionsInternal } from '../types';
 import ActionGroup from './ActionGroup';
 
 interface State {
   isVisible: boolean;
   isAnimating: boolean;
-  options: ActionSheetOptions | null;
+  options: ActionSheetOptionsInternal | null;
   onSelect: ((i: number) => void) | null;
   overlayOpacity: any;
   sheetOpacity: any;
@@ -184,7 +184,7 @@ class CustomActionSheet extends React.Component<Props, State> {
   }
 
   showActionSheetWithOptions = (
-    options: ActionSheetOptions,
+    options: ActionSheetOptionsInternal,
     onSelect: (i: number) => void
   ) => {
     const { isVisible, overlayOpacity, sheetOpacity } = this.state;

@@ -4,7 +4,14 @@ import * as React from 'react';
 import NativeActionSheet from './ActionSheet';
 import CustomActionSheet from './ActionSheet/CustomActionSheet';
 import { Provider } from './context';
-import type { ActionSheetOptions, ActionSheetProviderRef } from './types';
+import type {
+  ActionSheetOptions,
+  ActionSheetOptionsInternal,
+  ActionSheetProviderRef,
+  IconResource,
+} from './types';
+
+import isArray from 'lodash/isArray';
 
 interface Props {
   children: React.ReactNode;
@@ -25,9 +32,24 @@ export default React.forwardRef<ActionSheetProviderRef, Props>(
           options: ActionSheetOptions,
           callback: (i: number) => void
         ) => {
+          const modifiedOptions: ActionSheetOptionsInternal = {
+            ...options,
+            options: [],
+          };
+          if (
+            isArray(options.options) &&
+            typeof options.options[0] === 'string'
+          ) {
+            modifiedOptions.options = options.options.map((title) => ({
+              title,
+            })) as IconResource[];
+          } else {
+            modifiedOptions.options = options.options as IconResource[];
+          }
+
           if (actionSheetRef.current) {
             actionSheetRef.current.showActionSheetWithOptions(
-              options,
+              modifiedOptions,
               callback
             );
           }

@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { View, type ViewProps, NativeModules } from 'react-native';
 
-import type { ActionSheetIOSOptions } from '../types';
+import type {
+  ActionSheetIOSOptions,
+  ActionSheetIOSOptionsInternal,
+} from '../types';
 
 const ActionSheetIOS = NativeModules.ReactNativeActionSheet;
 
@@ -22,7 +25,7 @@ export default class ActionSheet extends React.Component<Props> {
   }
 
   showActionSheetWithOptions(
-    dataOptions: ActionSheetIOSOptions,
+    dataOptions: ActionSheetIOSOptionsInternal,
     onSelect: onSelect
   ) {
     // ...dataOptions include other keys which use in android, thats why `Android-Only options` Crash on IOS
@@ -34,7 +37,7 @@ export default class ActionSheet extends React.Component<Props> {
       cancelButtonTintColor,
       disabledButtonIndices,
     } = dataOptions;
-    const iosOptions: ActionSheetIOSOptions = {
+    const iosOptions: ActionSheetIOSOptionsInternal = {
       cancelButtonIndex,
       destructiveButtonIndex,
       options,
