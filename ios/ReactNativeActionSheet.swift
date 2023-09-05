@@ -45,7 +45,7 @@ class ReactNativeActionSheet: NSObject {
                             if #available(iOS 13.0, *), let image = UIImage(systemName: leftIcon) {
                                 leftIconImage = image
                             } else if let image = UIImage(named: leftIcon){
-                                leftIconImage = image
+                                leftIconImage = image.imageWithSize(scaledToSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysTemplate)
                             }
                         }
                         
@@ -54,7 +54,7 @@ class ReactNativeActionSheet: NSObject {
                             if #available(iOS 13.0, *), let image = UIImage(systemName: rightIcon) {
                                 rightIconImage = image
                             } else if let image = UIImage(named: rightIcon){
-                                rightIconImage = image
+                                rightIconImage = image.imageWithSize(scaledToSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysTemplate)
                             }
                         }
                         
@@ -223,4 +223,21 @@ extension UIColor {
 
         self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
+}
+
+extension UIImage {
+
+    func imageWithSize(scaledToSize newSize: CGSize) -> UIImage {
+        
+        let scale = size.width / size.height
+        
+        let size = CGSize(width: newSize.width * scale, height: newSize.height)
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        self.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+
 }
