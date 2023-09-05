@@ -1,9 +1,9 @@
 import UIKit
 
-struct AlertButton:Codable {
+struct AlertButton {
     let title: String;
-    let leftIcon: String?
-    let rightIcon: String?
+    let leftIcon: UIImage?
+    let rightIcon: UIImage?
 }
 
 @objc(ReactNativeActionSheet)
@@ -39,14 +39,33 @@ class ReactNativeActionSheet: NSObject {
                 for item in incomingButtons {
                     if let itemDict = item as? [String: Any],
                        let title = itemDict["title"] as? String {
-                        let leftIcon = itemDict["leftIcon"] as? String
-                        let rightIcon = itemDict["rightIcon"] as? String
                         
-                        let alertButton = AlertButton(title: title, leftIcon: leftIcon, rightIcon: rightIcon)
+                        var leftIconImage: UIImage?
+                        if let leftIcon = itemDict["leftIcon"] as? String {
+                            if #available(iOS 13.0, *), let image = UIImage(systemName: leftIcon) {
+                                leftIconImage = image
+                            } else if let image = UIImage(named: leftIcon){
+                                leftIconImage = image
+                            }
+                        }
+                        
+                        var rightIconImage: UIImage?
+                        if let rightIcon = itemDict["rightIcon"] as? String {
+                            if #available(iOS 13.0, *), let image = UIImage(systemName: rightIcon) {
+                                rightIconImage = image
+                            } else if let image = UIImage(named: rightIcon){
+                                rightIconImage = image
+                            }
+                        }
+                        
+                        let alertButton = AlertButton(
+                            title: title,
+                            leftIcon: leftIconImage,
+                            rightIcon: rightIconImage)
                         
                         buttons.append(alertButton)
                         
-                        if leftIcon != nil && rightIcon != nil {
+                        if rightIconImage != nil {
                             useCustom = true
                         }
                     }
@@ -123,8 +142,7 @@ class ReactNativeActionSheet: NSObject {
                     }
                     
                     if #available(iOS 13.0, *) {
-                        if let iconName = option.leftIcon,
-                           let image = UIImage(systemName: iconName) {
+                        if let image = option.leftIcon {
                             actionButton.setValue(image, forKey: "image")
                         }
                     } else {

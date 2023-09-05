@@ -127,14 +127,12 @@ class ActionSheetController: UIAlertController, UITableViewDelegate, UITableView
                                 
         
         if #available(iOS 13.0, *) {
-            if let iconName = option.leftIcon,
-               let image = UIImage(systemName: iconName) {
+            if let image = option.leftIcon {
                 cell.leftImage.isHidden = false
                 cell.leftImage.image = image
             }
             
-            if let iconName = option.rightIcon,
-               let image = UIImage(systemName: iconName) {
+            if let image = option.rightIcon {
                 cell.rightImage.isHidden = false
                 cell.rightImage.image = image
             }

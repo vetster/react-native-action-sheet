@@ -1,4 +1,7 @@
-import type { ActionSheetOptions } from '@vetster/react-native-action-sheet';
+import type {
+  ActionSheetOptions,
+  IconDetails,
+} from '@vetster/react-native-action-sheet';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import Entypo from 'react-native-vector-icons/dist/Entypo';
 import React from 'react';
@@ -10,9 +13,9 @@ import {
   findNodeHandle,
 } from 'react-native';
 
-const icon = (name: React.ComponentProps<typeof MaterialIcons>['name']) => (
-  <MaterialIcons key={name} name={name} size={24} />
-);
+const renderIcon = ({ icon, color }: IconDetails) => {
+  return <MaterialIcons key={icon} name={icon} size={24} color={color} />;
+};
 
 interface Props {
   title: string;
@@ -29,6 +32,7 @@ interface Props {
   withCancelButtonTintColor?: boolean;
   withAnchor?: boolean;
   useModal?: boolean;
+  useCustomActionSheet?: boolean;
 }
 
 // A custom button that shows examples of different share sheet configurations
@@ -43,6 +47,7 @@ export default class ShowActionSheetButton extends React.PureComponent<Props> {
     withCancelButtonTintColor: false,
     onSelection: null,
     useModal: false,
+    useCustomActionSheet: false,
   };
 
   _anchorRef = React.createRef<any>();
@@ -59,22 +64,33 @@ export default class ShowActionSheetButton extends React.PureComponent<Props> {
       onSelection,
       showActionSheetWithOptions,
       useModal,
+      useCustomActionSheet,
     } = this.props;
 
     // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
-    const options = [
-      { title: 'Delete' },
-      { title: 'Disabled' },
-      {
-        title: 'Save',
-        rightIcon: withIcons ? 'checkmark' : undefined,
-        leftIcon: withIcons ? 'personalhotspot' : undefined,
-      },
-      { title: 'Cancel' },
-    ];
-    const icons = withIcons
-      ? [icon('delete'), icon('save'), icon('share'), icon('cancel')]
-      : undefined;
+    const options = withIcons
+      ? [
+          {
+            title: 'Delete',
+            leftIcon: useCustomActionSheet ? 'delete' : 'trash',
+          },
+          { title: 'Disabled' },
+          {
+            title: 'Bluetooth',
+            rightIcon: useCustomActionSheet ? 'check' : 'checkmark',
+            leftIcon: useCustomActionSheet ? 'bluetooth' : 'bluetooth',
+          },
+          {
+            title: 'Cancel',
+            leftIcon: useCustomActionSheet ? 'cancel' : 'x.circle',
+          },
+        ]
+      : [
+          { title: 'Delete' },
+          { title: 'Disabled' },
+          { title: 'Save' },
+          { title: 'Cancel' },
+        ];
     const title = withTitle ? 'Choose An Action' : undefined;
     const message = withMessage
       ? 'This library tries to mimic the native share sheets as close as possible.'
@@ -124,7 +140,7 @@ export default class ShowActionSheetButton extends React.PureComponent<Props> {
         disabledButtonIndices,
         title,
         message,
-        icons,
+        renderIcon,
         //iPad only
         anchor: withAnchor && anchor ? anchor : undefined,
         // Android only

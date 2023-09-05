@@ -35,7 +35,7 @@ const EASING_IN = Easing.out(EASING_OUT);
 const ESCAPE_KEY = 'Escape';
 
 // Has same API as https://facebook.github.io/react-native/docs/actionsheetios.html
-export default class CustomActionSheet extends React.Component<Props, State> {
+class CustomActionSheet extends React.Component<Props, State> {
   _actionSheetHeight = 360;
 
   state: State = {
@@ -113,7 +113,6 @@ export default class CustomActionSheet extends React.Component<Props, State> {
 
     const {
       options: optionsArray,
-      icons,
       tintIcons,
       destructiveButtonIndex,
       disabledButtonIndices,
@@ -130,6 +129,7 @@ export default class CustomActionSheet extends React.Component<Props, State> {
       separatorStyle,
       cancelButtonIndex,
       cancelButtonTintColor,
+      renderIcon,
     } = options;
     return (
       <TouchableWithoutFeedback
@@ -155,8 +155,8 @@ export default class CustomActionSheet extends React.Component<Props, State> {
         >
           <View style={styles.sheet} onLayout={this._setActionSheetHeight}>
             <ActionGroup
+              renderIcon={renderIcon}
               options={optionsArray}
-              icons={icons}
               tintIcons={tintIcons === undefined ? true : tintIcons}
               cancelButtonIndex={cancelButtonIndex}
               cancelButtonTintColor={cancelButtonTintColor}
@@ -335,3 +335,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 });
+
+export default CustomActionSheet;

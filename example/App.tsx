@@ -12,13 +12,13 @@ import {
   Text,
   View,
   ScrollView,
-  SafeAreaView,
   TouchableOpacity,
   Share,
   Platform,
 } from 'react-native';
 
 import ShowActionSheetButton from './ShowActionSheetButton';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = ActionSheetProps & {
   useCustomActionSheet: boolean;
@@ -124,12 +124,14 @@ class App extends React.Component<Props, State> {
         {this._renderSectionHeader('Universal Options')}
         <ShowActionSheetButton
           title="Options Only"
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
         <ShowActionSheetButton
           title="Title"
           withTitle
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
@@ -137,12 +139,14 @@ class App extends React.Component<Props, State> {
           title="Title & Message"
           withTitle
           withMessage
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
         <ShowActionSheetButton
           title="Cancel Button Tint Color"
           withCancelButtonTintColor
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
@@ -150,11 +154,13 @@ class App extends React.Component<Props, State> {
           title="iPad Anchor"
           withAnchor
           withTitle
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
         <ShowActionSheetButton
           title="Nested Action Sheets"
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={(index) => {
             if (!index || index < 3) {
               showActionSheetWithOptions(
@@ -176,6 +182,7 @@ class App extends React.Component<Props, State> {
         />
         <ShowActionSheetButton
           title="Share Menu"
+          useCustomActionSheet={this.props.useCustomActionSheet}
           showActionSheetWithOptions={() =>
             showActionSheetWithOptions(
               {
@@ -193,6 +200,7 @@ class App extends React.Component<Props, State> {
         <ShowActionSheetButton
           title="Icons"
           withIcons
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
@@ -201,6 +209,7 @@ class App extends React.Component<Props, State> {
           withTitle
           withMessage
           withIcons
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
@@ -209,6 +218,7 @@ class App extends React.Component<Props, State> {
           withTitle
           withIcons
           withSeparators
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
@@ -218,6 +228,7 @@ class App extends React.Component<Props, State> {
           withMessage
           withIcons
           withCustomStyles
+          useCustomActionSheet={this.props.useCustomActionSheet}
           onSelection={this._updateSelectionText}
           showActionSheetWithOptions={showActionSheetWithOptions}
         />
@@ -231,6 +242,7 @@ class App extends React.Component<Props, State> {
               <ShowActionSheetButton
                 useModal
                 title="Options Only"
+                useCustomActionSheet={this.props.useCustomActionSheet}
                 onSelection={this._updateSelectionText}
                 showActionSheetWithOptions={showActionSheetWithOptions}
               />
@@ -260,8 +272,8 @@ class App extends React.Component<Props, State> {
           {this._renderButtons()}
           {this._renderSelectionText()}
           <Text style={styles.notes}>
-            Note: Icons and custom text styles are only available on Android.
-            Separators can only be toggled on Android; they always show on iOS.
+            Note: Custom text styles are only available on Android. Separators
+            can only be toggled on Android; they always show on iOS.
           </Text>
         </ScrollView>
       </SafeAreaView>
@@ -275,12 +287,14 @@ export default function WrappedApp() {
   const [useCustomActionSheet, setUseCustomActionSheet] = useState(false);
 
   return (
-    <ActionSheetProvider useCustomActionSheet={useCustomActionSheet}>
-      <ConnectedApp
-        useCustomActionSheet={useCustomActionSheet}
-        setUseCustomActionSheet={setUseCustomActionSheet}
-      />
-    </ActionSheetProvider>
+    <SafeAreaProvider>
+      <ActionSheetProvider useCustomActionSheet={useCustomActionSheet}>
+        <ConnectedApp
+          useCustomActionSheet={useCustomActionSheet}
+          setUseCustomActionSheet={setUseCustomActionSheet}
+        />
+      </ActionSheetProvider>
+    </SafeAreaProvider>
   );
 }
 

@@ -12,15 +12,20 @@ import {
   type ColorValue,
 } from 'react-native';
 
-import type { ActionSheetOptions } from '../types';
+import type { ActionSheetOptions, IconDetails } from '../types';
 import TouchableNativeFeedbackSafe from './TouchableNativeFeedbackSafe';
+import {
+  withSafeAreaInsets,
+  type WithSafeAreaInsetsProps,
+} from 'react-native-safe-area-context';
 
-type Props = ActionSheetOptions & {
-  tintIcons: boolean | null;
-  onSelect: (i: number) => boolean;
-  startIndex: number;
-  length: number;
-};
+type Props = ActionSheetOptions &
+  WithSafeAreaInsetsProps & {
+    tintIcons: boolean | null;
+    onSelect: (i: number) => boolean;
+    startIndex: number;
+    length: number;
+  };
 
 const BLACK_54PC_TRANSPARENT = '#0000008a';
 const BLACK_87PC_TRANSPARENT = '#000000de';
@@ -66,7 +71,7 @@ const isIndexDisabled = (
   return disabledButtonIndices.includes(index);
 };
 
-export default class ActionGroup extends React.Component<Props> {
+class ActionGroup extends React.Component<Props> {
   static defaultProps = {
     title: null,
     message: null,
@@ -76,8 +81,17 @@ export default class ActionGroup extends React.Component<Props> {
   };
 
   render() {
+    const { insets } = this.props;
+    console.log({ insets });
+
     return (
-      <View style={[styles.groupContainer, this.props.containerStyle]}>
+      <View
+        style={[
+          styles.groupContainer,
+          this.props.containerStyle,
+          { paddingBottom: insets.bottom },
+        ]}
+      >
         {this._renderTitleContent()}
         <ScrollView>{this._renderOptionViews()}</ScrollView>
       </View>
@@ -144,14 +158,31 @@ export default class ActionGroup extends React.Component<Props> {
         />
       );
     } else {
-      return <View style={styles.icon}>{iconSource}</View>;
+      return { iconSource };
     }
+  };
+
+  renderIcon = (iconDetails: IconDetails) => {
+    const { renderIcon } = this.props;
+    return (
+      <View
+        style={[
+          styles.icon,
+          {
+            [iconDetails.direction === 'left'
+              ? 'marginRight'
+              : 'marginLeft']: 12,
+          },
+        ]}
+      >
+        {renderIcon?.(iconDetails)}
+      </View>
+    );
   };
 
   _renderOptionViews = () => {
     const {
       options,
-      icons,
       cancelButtonIndex,
       cancelButtonTintColor,
       destructiveButtonIndex,
@@ -171,6 +202,10 @@ export default class ActionGroup extends React.Component<Props> {
       false
     );
 
+    const hasLeftIcon = options
+      ?.map((option) => !!option.leftIcon || !!option.rightIcon)
+      .reduce((prev, curr) => prev || curr, false);
+
     for (let i = startIndex; i < startIndex + length; i++) {
       const defaultColor = tintColor
         ? tintColor
@@ -182,7 +217,8 @@ export default class ActionGroup extends React.Component<Props> {
         : isCancelButton
         ? cancelButtonTintColor || defaultColor
         : defaultColor;
-      const iconSource = icons != null ? icons[i] : null;
+
+      const option = options[i];
 
       optionViews.push(
         <TouchableNativeFeedbackSafe
@@ -194,12 +230,25 @@ export default class ActionGroup extends React.Component<Props> {
           onPress={() => onSelect(i)}
           style={[styles.button, disabled && styles.disabledButton]}
           accessibilityRole="button"
-          accessibilityLabel={options[i].title}
+          accessibilityLabel={option.title}
         >
-          {this._renderIconElement(iconSource, color)}
+          {hasLeftIcon &&
+            this.renderIcon({
+              color,
+              icon: option.leftIcon,
+              direction: 'left',
+              index: i,
+            })}
           <Text style={[styles.text, textStyle, { color }]}>
             {options[i].title}
           </Text>
+          {option.rightIcon &&
+            this.renderIcon({
+              color,
+              icon: option.rightIcon,
+              direction: 'right',
+              index: i,
+            })}
         </TouchableNativeFeedbackSafe>
       );
 
@@ -211,6 +260,8 @@ export default class ActionGroup extends React.Component<Props> {
     return optionViews;
   };
 }
+
+export default withSafeAreaInsets(ActionGroup);
 
 const styles = StyleSheet.create({
   button: {
@@ -230,7 +281,6 @@ const styles = StyleSheet.create({
   icon: {
     width: 24,
     height: 24,
-    marginRight: 32,
     justifyContent: 'center',
   },
   message: {
@@ -248,6 +298,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: BLACK_87PC_TRANSPARENT,
     textAlignVertical: 'center',
+    flexGrow: 1,
   },
   title: {
     fontSize: 16,
