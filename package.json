@@ -35,16 +35,16 @@
     "ios",
     "react-native"
   ],
-  "repository": "https://github.com/vetster/react-native-action-sheet",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:vetster/react-native-action-sheet.git"
+  },
   "author": "Vetster Engineering <engineering@vetster.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vetster/react-native-action-sheet/issues"
   },
   "homepage": "https://github.com/vetster/react-native-action-sheet#readme",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "dependencies": {
     "@types/hoist-non-react-statics": "^3.3.1",
     "hoist-non-react-statics": "^3.3.0"
