@@ -65,7 +65,11 @@ export default class ShowActionSheetButton extends React.PureComponent<Props> {
     const options = [
       { title: 'Delete' },
       { title: 'Disabled' },
-      { title: 'Save', iconName: 'checkmark' },
+      {
+        title: 'Save',
+        rightIcon: withIcons ? 'checkmark' : undefined,
+        leftIcon: withIcons ? 'personalhotspot' : undefined,
+      },
       { title: 'Cancel' },
     ];
     const icons = withIcons

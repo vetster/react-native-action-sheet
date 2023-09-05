@@ -2,7 +2,8 @@ import UIKit
 
 struct AlertButton:Codable {
     let title: String;
-    let iconName: String?
+    let leftIcon: String?
+    let rightIcon: String?
 }
 
 @objc(ReactNativeActionSheet)
@@ -28,18 +29,26 @@ class ReactNativeActionSheet: NSObject {
     func showActionSheetWithOptions(_ options: [String: Any],
                                     callback: @escaping RCTResponseSenderBlock) {
         DispatchQueue.main.async {
-            NSLog("called")
             let title = options["title"] as? String
             let message = options["message"] as? String
             var buttons:[AlertButton] = []
+            
+            var useCustom = false
             
             if let incomingButtons = options["options"] as? [Any]{
                 for item in incomingButtons {
                     if let itemDict = item as? [String: Any],
                        let title = itemDict["title"] as? String {
-                        let iconName = itemDict["iconName"] as? String
-                        let alertButton = AlertButton(title: title, iconName: iconName)
+                        let leftIcon = itemDict["leftIcon"] as? String
+                        let rightIcon = itemDict["rightIcon"] as? String
+                        
+                        let alertButton = AlertButton(title: title, leftIcon: leftIcon, rightIcon: rightIcon)
+                        
                         buttons.append(alertButton)
+                        
+                        if leftIcon != nil && rightIcon != nil {
+                            useCustom = true
+                        }
                     }
                 }
             }
@@ -69,55 +78,77 @@ class ReactNativeActionSheet: NSObject {
             let cancelButtonTintColorHex = options["cancelButtonTintColor"] as? String
             let userInterfaceStyle = options["userInterfaceStyle"] as? String
             
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+            let alertController: UIAlertController
+            
+            if useCustom {
+                alertController = ActionSheetController(
+                    title: title,
+                    message: message,
+                    configuration: ActionSheetConfiguration(
+                        buttons: buttons,
+                        callback: callback,
+                        cancelButtonIndex: cancelButtonIndex,
+                        destructiveButtonIndices: destructiveButtonIndices,
+                        disabledButtonIndices: disabledButtonIndices,
+                        tintColor: tintColorHex,
+                        cancelButtonTintColorHex: cancelButtonTintColorHex,
+                        hideExtraSeparator: title == nil && message == nil
+                    )
+                )
+            } else {
+                alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+            }
             
             alertController.modalPresentationStyle = .popover;
             
-            var isCancelButtonIndex = false
-            var callbackInvoked = false
-            
-            for (index, option) in buttons.enumerated() {
-                var style: UIAlertAction.Style = .default
+            if !useCustom {
+                var isCancelButtonIndex = false
+                var callbackInvoked = false
                 
-                if destructiveButtonIndices.contains(index) {
-                    style = .destructive
-                } else if index == cancelButtonIndex {
-                    style = .cancel
-                    isCancelButtonIndex = true
-                }
-                                
-                let actionButton = UIAlertAction(title: option.title, style: style) { _ in
-                    if !callbackInvoked {
-                        callbackInvoked = true
-                        callback([index])
+                for (index, option) in buttons.enumerated() {
+                    var style: UIAlertAction.Style = .default
+                    
+                    if destructiveButtonIndices.contains(index) {
+                        style = .destructive
+                    } else if index == cancelButtonIndex {
+                        style = .cancel
+                        isCancelButtonIndex = true
                     }
-                }
-                
-                if #available(iOS 13.0, *) {
-                    if let iconName = option.iconName,
-                       let image = UIImage(systemName: iconName) {
-                        actionButton.setValue(image, forKey: "image")
+                    
+                    let actionButton = UIAlertAction(title: option.title, style: style) { _ in
+                        if !callbackInvoked {
+                            callbackInvoked = true
+                            callback([index])
+                        }
                     }
-                } else {
-                    // Fallback on earlier versions
-                }
-                
-                if isCancelButtonIndex {
-                    if let cancelButtonTintColorHex = cancelButtonTintColorHex,
-                       let cancelButtonTintColor = UIColor(hex: cancelButtonTintColorHex) {
-                        actionButton.setValue(cancelButtonTintColor, forKey: "titleTextColor")
+                    
+                    if #available(iOS 13.0, *) {
+                        if let iconName = option.leftIcon,
+                           let image = UIImage(systemName: iconName) {
+                            actionButton.setValue(image, forKey: "image")
+                        }
+                    } else {
+                        // Fallback on earlier versions
                     }
+                    
+                    if isCancelButtonIndex {
+                        if let cancelButtonTintColorHex = cancelButtonTintColorHex,
+                           let cancelButtonTintColor = UIColor(hex: cancelButtonTintColorHex) {
+                            actionButton.setValue(cancelButtonTintColor, forKey: "titleTextColor")
+                        }
+                    }
+                    
+                    alertController.addAction(actionButton)
                 }
                 
-                alertController.addAction(actionButton)
-            }
-            
-            for disabledIndex in disabledButtonIndices {
-                if disabledIndex < buttons.count {
-                    alertController.actions[disabledIndex].isEnabled = false
-                } else {
-                    NSLog("Index \(disabledIndex) from `disabledButtonIndices` is out of bounds. Maximum index value is \(buttons.count - 1).")
-                    return
+                
+                for disabledIndex in disabledButtonIndices {
+                    if disabledIndex < buttons.count {
+                        alertController.actions[disabledIndex].isEnabled = false
+                    } else {
+                        NSLog("Index \(disabledIndex) from `disabledButtonIndices` is out of bounds. Maximum index value is \(buttons.count - 1).")
+                        return
+                    }
                 }
             }
             
