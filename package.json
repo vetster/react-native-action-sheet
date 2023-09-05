@@ -1,6 +1,6 @@
 {
   "name": "@vetster/react-native-action-sheet",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "A cross-platform ActionSheet for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -22,7 +22,7 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint . --fix",
     "lint-check": "eslint",
-    "semantic-release": "semantic-release",
+    "semantic-release": "npx semantic-release",
     "typecheck": "tsc",
     "release": "release-it",
     "example": "yarn --cwd example",
