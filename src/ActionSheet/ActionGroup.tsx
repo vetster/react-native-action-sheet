@@ -82,7 +82,6 @@ class ActionGroup extends React.Component<Props> {
 
   render() {
     const { insets } = this.props;
-    console.log({ insets });
 
     return (
       <View

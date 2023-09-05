@@ -143,7 +143,6 @@ class ActionSheetController: UIAlertController, UITableViewDelegate, UITableView
         }
         
         if index >= configuration.buttons.endIndex - 1 {
-            print("called \(configuration.hideExtraSeparator)")
             cell.bottomSeperator.isHidden = configuration.hideExtraSeparator
         }
         
